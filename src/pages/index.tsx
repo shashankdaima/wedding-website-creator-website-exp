@@ -14,7 +14,6 @@ export default function Home() {
       <Head>
         <title>Sarah & John - Wedding Celebration</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet" />
       </Head>
       <main className="overflow-x-hidden">
         <Hero />

@@ -1,36 +1,42 @@
 import { useEffect } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
+import { useAnimation } from '@/context/AnimationContext';
 import FlowerCorner from './svg/FlowerCorner';
 
 export default function Gifts() {
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    
-    // Set initial states
-    gsap.set('.gift-card', { 
-      opacity: 0,
-      y: 50
-    });
-    
-    // Create timeline for gift cards animation
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: '#gifts',
-        start: 'top center+=100',
-        toggleActions: 'play none none reverse'
-      }
-    });
+  const { enableAnimations } = useAnimation();
 
-    // Add each card to the timeline with staggered animation
+  useEffect(() => {
+    if (!enableAnimations) {
+      // When animations are disabled, make everything visible immediately
+      const elements = document.querySelectorAll('.gift-card');
+      elements.forEach(element => {
+        if (element instanceof HTMLElement) {
+          element.style.opacity = '1';
+          element.style.transform = 'none';
+          element.style.visibility = 'visible';
+        }
+      });
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
     const cards = document.querySelectorAll('.gift-card');
     cards.forEach((card, index) => {
-      tl.to(card, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: 'back.out(1.7)'
-      }, index * 0.2);
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top center+=100',
+          toggleActions: 'play none none reverse'
+        },
+        opacity: 0,
+        y: 50,
+        duration: 0.8,
+        delay: index * 0.2,
+        ease: 'power3.out'
+      });
     });
 
     // Animate flower corners
@@ -48,7 +54,7 @@ export default function Gifts() {
       ease: 'elastic.out(1, 0.5)',
       stagger: 0.2
     });
-  }, []);
+  }, [enableAnimations]);
 
   const registries = [
     {
@@ -89,7 +95,7 @@ export default function Gifts() {
           {registries.map((registry, index) => (
             <div 
               key={index}
-              className="gift-card bg-white p-8 rounded-lg shadow-lg transform hover:-translate-y-2 transition-all duration-300 hover:shadow-xl"
+              className={`gift-card bg-white p-8 rounded-lg shadow-lg transform hover:-translate-y-2 transition-all duration-300 hover:shadow-xl ${!enableAnimations ? 'opacity-100' : ''}`}
             >
               <div className="text-4xl mb-4">{registry.icon}</div>
               <h3 className="text-2xl font-cormorant font-semibold mb-4">{registry.name}</h3>

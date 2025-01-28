@@ -1,10 +1,26 @@
 import { useEffect } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
+import { useAnimation } from '@/context/AnimationContext';
 import FlowerCorner from './svg/FlowerCorner';
 
 export default function PhotoGallery() {
+  const { enableAnimations } = useAnimation();
+
   useEffect(() => {
+    if (!enableAnimations) {
+      // When animations are disabled, make everything visible immediately
+      const elements = document.querySelectorAll('.photo-item, .flower-corner-animation');
+      elements.forEach(element => {
+        if (element instanceof HTMLElement) {
+          element.style.opacity = '1';
+          element.style.transform = 'none';
+          element.style.visibility = 'visible';
+        }
+      });
+      return;
+    }
+
     gsap.registerPlugin(ScrollTrigger);
     
     // Set initial states
@@ -45,7 +61,7 @@ export default function PhotoGallery() {
       ease: 'elastic.out(1, 0.5)',
       stagger: 0.2
     });
-  }, []);
+  }, [enableAnimations]);
 
   const photos = [
     {
@@ -88,7 +104,7 @@ export default function PhotoGallery() {
           {photos.map((photo, index) => (
             <div 
               key={index}
-              className="photo-item relative overflow-hidden rounded-lg shadow-xl aspect-[3/4] group"
+              className={`photo-item relative overflow-hidden rounded-lg shadow-xl aspect-[3/4] group ${!enableAnimations ? 'opacity-100' : ''}`}
             >
               <img 
                 src={photo.url} 
