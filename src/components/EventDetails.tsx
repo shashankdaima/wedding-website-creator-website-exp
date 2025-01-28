@@ -3,7 +3,21 @@ import gsap from 'gsap';
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 import { useAnimation } from '@/context/AnimationContext';
 
-export default function EventDetails() {
+interface EventLocation {
+  title: string;
+  time: string;
+  location: string;
+  address: string;
+}
+
+interface EventDetailsProps {
+  title: string;
+  ceremony: EventLocation;
+  reception: EventLocation;
+  afterParty: EventLocation;
+}
+
+export default function EventDetails({ title, ceremony, reception, afterParty }: EventDetailsProps) {
   const { enableAnimations } = useAnimation();
 
   useEffect(() => {
@@ -42,25 +56,25 @@ export default function EventDetails() {
   return (
     <section id="events" className="py-20 px-4 bg-[#faf9f8]">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-5xl font-great-vibes text-center text-[#2c3e50] mb-16">Wedding Events</h2>
+        <h2 className="text-5xl font-great-vibes text-center text-[#2c3e50] mb-16">{title}</h2>
         <div className="grid md:grid-cols-3 gap-8">
           <div className={`event-card bg-white p-8 rounded-lg shadow-lg text-center ${!enableAnimations ? 'opacity-100' : ''}`}>
-            <h3 className="text-2xl font-cormorant font-semibold mb-4">The Ceremony</h3>
-            <p className="font-cormorant text-lg mb-2">4:00 PM</p>
-            <p className="font-cormorant text-gray-600">St. Patrick's Cathedral</p>
-            <p className="font-cormorant text-gray-600">New York, NY</p>
+            <h3 className="text-2xl font-cormorant font-semibold mb-4">{ceremony.title}</h3>
+            <p className="font-cormorant text-lg mb-2">{ceremony.time}</p>
+            <p className="font-cormorant text-gray-600">{ceremony.location}</p>
+            <p className="font-cormorant text-gray-600">{ceremony.address}</p>
           </div>
           <div className={`event-card bg-white p-8 rounded-lg shadow-lg text-center ${!enableAnimations ? 'opacity-100' : ''}`}>
-            <h3 className="text-2xl font-cormorant font-semibold mb-4">The Reception</h3>
-            <p className="font-cormorant text-lg mb-2">6:00 PM</p>
-            <p className="font-cormorant text-gray-600">The Plaza Hotel</p>
-            <p className="font-cormorant text-gray-600">Grand Ballroom</p>
+            <h3 className="text-2xl font-cormorant font-semibold mb-4">{reception.title}</h3>
+            <p className="font-cormorant text-lg mb-2">{reception.time}</p>
+            <p className="font-cormorant text-gray-600">{reception.location}</p>
+            <p className="font-cormorant text-gray-600">{reception.address}</p>
           </div>
           <div className={`event-card bg-white p-8 rounded-lg shadow-lg text-center ${!enableAnimations ? 'opacity-100' : ''}`}>
-            <h3 className="text-2xl font-cormorant font-semibold mb-4">The After Party</h3>
-            <p className="font-cormorant text-lg mb-2">10:00 PM</p>
-            <p className="font-cormorant text-gray-600">The Plaza Hotel</p>
-            <p className="font-cormorant text-gray-600">Rooftop Garden</p>
+            <h3 className="text-2xl font-cormorant font-semibold mb-4">{afterParty.title}</h3>
+            <p className="font-cormorant text-lg mb-2">{afterParty.time}</p>
+            <p className="font-cormorant text-gray-600">{afterParty.location}</p>
+            <p className="font-cormorant text-gray-600">{afterParty.address}</p>
           </div>
         </div>
       </div>

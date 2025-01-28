@@ -3,7 +3,13 @@ import gsap from 'gsap';
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 import { useAnimation } from '@/context/AnimationContext';
 
-export default function OurStory() {
+interface OurStoryProps {
+  title: string;
+  content: string;
+  image: string;
+}
+
+export default function OurStory({ title, content, image }: OurStoryProps) {
   const { enableAnimations } = useAnimation();
 
   useEffect(() => {
@@ -51,21 +57,14 @@ export default function OurStory() {
   return (
     <section id="our-story" className="py-20 px-4 bg-white">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-5xl font-great-vibes text-center text-[#2c3e50] mb-16">Our Story</h2>
+        <h2 className="text-5xl font-great-vibes text-center text-[#2c3e50] mb-16">{title}</h2>
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className={`story-content ${!enableAnimations ? 'opacity-100' : ''}`}>
-            <p className="font-cormorant text-lg text-gray-700 mb-6">
-              We met on a rainy evening in New York City, both taking shelter in the same cozy coffee shop. 
-              What started as a chance encounter turned into hours of conversation and laughter.
-            </p>
-            <p className="font-cormorant text-lg text-gray-700 mb-6">
-              Two years later, on the same rainy evening, John proposed at that very coffee shop, 
-              and here we are, ready to begin our forever together.
-            </p>
+            <p className="font-cormorant text-lg text-gray-700 mb-6">{content}</p>
           </div>
           <div className={`story-image ${!enableAnimations ? 'opacity-100' : ''}`}>
             <img 
-              src="https://images.unsplash.com/photo-1529634597503-139d3726fed5" 
+              src={image} 
               alt="Couple" 
               className="rounded-lg shadow-xl w-full h-[500px] object-cover"
             />

@@ -2,7 +2,21 @@ import { useEffect } from 'react';
 import gsap from 'gsap';
 import { useAnimation } from '@/context/AnimationContext';
 
-export default function Hero() {
+interface HeroProps {
+  backgroundImage: string;
+  title: string;
+  subtitle: string;
+  date: string;
+  overlayOpacity?: string;
+}
+
+export default function Hero({ 
+  backgroundImage,
+  title,
+  subtitle,
+  date,
+  overlayOpacity = "30"
+}: HeroProps) {
   const { enableAnimations } = useAnimation();
 
   useEffect(() => {
@@ -38,12 +52,15 @@ export default function Hero() {
 
   return (
     <section id="hero" className="h-screen relative overflow-hidden">
-      <div className="absolute inset-0 bg-black/30 z-10"></div>
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1519741497674-611481863552')] bg-cover bg-center"></div>
+      <div className={`absolute inset-0 bg-black/${overlayOpacity} z-10`}></div>
+      <div 
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url('${backgroundImage}')` }}
+      ></div>
       <div className="relative z-20 h-full flex flex-col items-center justify-center text-white">
-        <h1 id="hero" className="text-7xl font-great-vibes mb-4">Sarah & John</h1>
-        <p id="hero" className="text-xl font-cormorant tracking-widest">ARE GETTING MARRIED</p>
-        <p id="hero" className="mt-8 text-2xl font-cormorant">August 15, 2025</p>
+        <h1 id="hero" className="text-7xl font-great-vibes mb-4">{title}</h1>
+        <p id="hero" className="text-xl font-cormorant tracking-widest">{subtitle}</p>
+        <p id="hero" className="mt-8 text-2xl font-cormorant">{date}</p>
       </div>
     </section>
   );

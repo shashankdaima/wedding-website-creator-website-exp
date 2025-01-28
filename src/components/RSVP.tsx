@@ -3,13 +3,18 @@ import gsap from 'gsap';
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 import { useAnimation } from '@/context/AnimationContext';
 
-export default function RSVP() {
+interface RSVPProps {
+  title: string;
+  description: string;
+  deadline: string;
+}
+
+export default function RSVP({ title, description, deadline }: RSVPProps) {
   const { enableAnimations } = useAnimation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    attending: 'yes',
-    guests: '1',
+    guests: '',
     message: ''
   });
 
@@ -70,87 +75,67 @@ export default function RSVP() {
   };
 
   return (
-    <section id="rsvp" className="py-20 px-4 bg-[#faf9f8]">
-      <div className="max-w-4xl mx-auto">
+    <section id="rsvp" className="py-20 bg-gray-50">
+      <div className="container mx-auto px-4">
         <div className={`rsvp-content text-center mb-12 ${!enableAnimations ? 'opacity-100' : ''}`}>
-          <h2 className="text-5xl font-great-vibes text-[#2c3e50] mb-6">RSVP</h2>
-          <p className="font-cormorant text-xl text-gray-600">
-            Please let us know if you'll be joining us on our special day.
-          </p>
+          <h2 className="text-4xl font-great-vibes text-center mb-8">{title}</h2>
+          <p className="text-center text-gray-600 max-w-2xl mx-auto mb-4">{description}</p>
+          <p className="text-center text-gray-500 mb-12">Please RSVP by {deadline}</p>
         </div>
         
         <form 
           onSubmit={handleSubmit}
           className={`rsvp-form bg-white rounded-lg shadow-lg p-8 ${!enableAnimations ? 'opacity-100' : ''}`}
         >
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="block font-cormorant text-gray-700">Name</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2c3e50]"
-                required
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <label className="block font-cormorant text-gray-700">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2c3e50]"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="block font-cormorant text-gray-700">Will you attend?</label>
-              <select
-                name="attending"
-                value={formData.attending}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2c3e50]"
-              >
-                <option value="yes">Joyfully Accept</option>
-                <option value="no">Regretfully Decline</option>
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="block font-cormorant text-gray-700">Number of Guests</label>
-              <select
-                name="guests"
-                value={formData.guests}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2c3e50]"
-              >
-                {[1, 2, 3, 4].map(num => (
-                  <option key={num} value={num}>{num}</option>
-                ))}
-              </select>
-            </div>
+          <div className="mb-6">
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              placeholder="Your Name"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+              required
+            />
           </div>
-
-          <div className="mt-6 space-y-2">
-            <label className="block font-cormorant text-gray-700">Message</label>
+          <div className="mb-6">
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              placeholder="Your Email"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <select
+              name="guests"
+              value={formData.guests}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+            >
+              <option value="">Number of Guests</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+          <div className="mb-6">
             <textarea
               name="message"
               value={formData.message}
               onChange={handleInputChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2c3e50]"
+              placeholder="Any dietary restrictions or special requirements?"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400 h-32"
             />
           </div>
-
           <div className="mt-8 text-center">
             <button
               type="submit"
-              className="bg-[#2c3e50] text-white px-8 py-3 rounded-lg hover:bg-[#34495e] transition-colors font-cormorant text-lg"
+              className="w-full bg-gray-800 text-white py-3 rounded-lg hover:bg-gray-700 transition-colors"
             >
               Send RSVP
             </button>
