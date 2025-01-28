@@ -6,21 +6,41 @@ export default function EventDetails() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     
-    const cards = ['.ceremony-card', '.reception-card', '.party-card'];
-    cards.forEach((card, index) => {
-      gsap.from(card, {
-        scrollTrigger: {
-          trigger: '#details',
-          start: 'top center',
-          toggleActions: 'play none none reverse'
-        },
-        duration: 0.8,
-        y: 50,
-        opacity: 0,
-        ease: 'back.out(1.7)',
-        delay: 0.2 * (index + 1)
-      });
+    // Set initial states
+    gsap.set('.ceremony-card, .reception-card, .party-card', { 
+      opacity: 0,
+      y: 50 
     });
+    
+    // Create timeline for cards animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#details',
+        start: 'top center+=100',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    // Add each card to the timeline with staggered animation
+    tl.to('.ceremony-card', {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: 'back.out(1.7)'
+    })
+    .to('.reception-card', {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: 'back.out(1.7)'
+    }, '-=0.3')
+    .to('.party-card', {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: 'back.out(1.7)'
+    }, '-=0.3');
+
   }, []);
 
   return (

@@ -7,21 +7,31 @@ export default function PhotoGallery() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     
-    gsap.from('#gallery .photo-item', {
-      scrollTrigger: {
-        trigger: '#gallery',
-        start: 'top center',
-        toggleActions: 'play none none reverse'
-      },
-      duration: 1,
-      y: 50,
+    // Set initial states
+    gsap.set('.photo-item', { 
       opacity: 0,
-      stagger: 0.2,
-      ease: 'power2.out'
+      y: 50
+    });
+    
+    // Create timeline for photos animation
+    const photos = document.querySelectorAll('.photo-item');
+    photos.forEach((photo, index) => {
+      gsap.to(photo, {
+        scrollTrigger: {
+          trigger: photo,
+          start: 'top center+=100',
+          toggleActions: 'play none none reverse'
+        },
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        delay: index * 0.2
+      });
     });
 
     // Animate flower corners
-    gsap.from('#gallery .flower-corner-animation', {
+    gsap.from('.flower-corner-animation', {
       scrollTrigger: {
         trigger: '#gallery',
         start: 'top center',
@@ -38,12 +48,30 @@ export default function PhotoGallery() {
   }, []);
 
   const photos = [
-    'https://images.unsplash.com/photo-1519741497674-611481863552',
-    'https://images.unsplash.com/photo-1511285560929-80b456fea0bc',
-    'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6',
-    'https://images.unsplash.com/photo-1469371670807-013ccf25f16a',
-    'https://images.unsplash.com/photo-1522673607200-164d1b6ce486',
-    'https://images.unsplash.com/photo-1460364157752-926555421a7e'
+    {
+      url: 'https://images.unsplash.com/photo-1519741497674-611481863552',
+      caption: 'First Date'
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc',
+      caption: 'The Proposal'
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6',
+      caption: 'Engagement Party'
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1469371670807-013ccf25f16a',
+      caption: 'Family Gathering'
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486',
+      caption: 'Pre-wedding Shoot'
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1460364157752-926555421a7e',
+      caption: 'Save the Date'
+    }
   ];
 
   return (
@@ -60,13 +88,18 @@ export default function PhotoGallery() {
           {photos.map((photo, index) => (
             <div 
               key={index}
-              className="photo-item relative overflow-hidden rounded-lg shadow-xl aspect-[3/4] transform hover:scale-105 transition-transform duration-300"
+              className="photo-item relative overflow-hidden rounded-lg shadow-xl aspect-[3/4] group"
             >
               <img 
-                src={photo} 
-                alt={`Wedding moment ${index + 1}`}
-                className="w-full h-full object-cover"
+                src={photo.url} 
+                alt={photo.caption}
+                className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
               />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                <p className="text-white font-cormorant text-xl p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                  {photo.caption}
+                </p>
+              </div>
             </div>
           ))}
         </div>

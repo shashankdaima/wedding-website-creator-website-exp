@@ -7,21 +7,34 @@ export default function Gifts() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     
-    gsap.from('#gifts .gift-card', {
+    // Set initial states
+    gsap.set('.gift-card', { 
+      opacity: 0,
+      y: 50
+    });
+    
+    // Create timeline for gift cards animation
+    const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '#gifts',
-        start: 'top center',
+        start: 'top center+=100',
         toggleActions: 'play none none reverse'
-      },
-      duration: 1,
-      y: 50,
-      opacity: 0,
-      stagger: 0.2,
-      ease: 'back.out(1.7)'
+      }
+    });
+
+    // Add each card to the timeline with staggered animation
+    const cards = document.querySelectorAll('.gift-card');
+    cards.forEach((card, index) => {
+      tl.to(card, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'back.out(1.7)'
+      }, index * 0.2);
     });
 
     // Animate flower corners
-    gsap.from('#gifts .flower-corner-animation', {
+    gsap.from('.flower-corner-animation', {
       scrollTrigger: {
         trigger: '#gifts',
         start: 'top center',
@@ -76,7 +89,7 @@ export default function Gifts() {
           {registries.map((registry, index) => (
             <div 
               key={index}
-              className="gift-card bg-white p-8 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300"
+              className="gift-card bg-white p-8 rounded-lg shadow-lg transform hover:-translate-y-2 transition-all duration-300 hover:shadow-xl"
             >
               <div className="text-4xl mb-4">{registry.icon}</div>
               <h3 className="text-2xl font-cormorant font-semibold mb-4">{registry.name}</h3>
