@@ -2,9 +2,21 @@ import { useEffect } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 import FlowerBorder from './svg/FlowerBorder';
+import { useAnimation } from '../context/AnimationContext';
 
 export default function Timeline() {
+  const { enableAnimations } = useAnimation();
+
   useEffect(() => {
+    if (!enableAnimations) {
+      // Set elements to their final state without animations
+      gsap.set('.timeline-item', { opacity: 1 });
+      gsap.set('.timeline-dot', { opacity: 1, scale: 1 });
+      gsap.set('.timeline-card', { y: 0, opacity: 1 });
+      gsap.set('.timeline-line', { height: '100%' });
+      return;
+    }
+
     gsap.registerPlugin(ScrollTrigger);
 
     // Set initial states
