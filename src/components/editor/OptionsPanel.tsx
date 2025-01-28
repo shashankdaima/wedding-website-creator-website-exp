@@ -1,35 +1,355 @@
+import { useForm, useWatch } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { updateWebsiteData } from "@/store/editorSlice";
+import { useEffect } from "react";
+
 export default function OptionsPanel() {
+  const dispatch = useAppDispatch();
+  const websiteData = useAppSelector((state) => state.editor.websiteData);
+  const { register, control } = useForm({
+    defaultValues: websiteData,
+  });
+
+  // Watch for form changes and update Redux in real-time
+  const formValues = useWatch({ control });
+  useEffect(() => {
+    if (formValues) {
+      console.log(formValues);
+      // dispatch(updateWebsiteData(formValues));
+    }
+  }, [formValues, dispatch]);
+
   return (
-    <div className="h-full bg-white border-l border-gray-200">
-      <div className="p-4">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">Canvas Options</h2>
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">Background Color</label>
-            <input 
-              type="color" 
-              className="h-8 w-full rounded border border-gray-300"
-              defaultValue="#ffffff"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">Width</label>
-            <input 
-              type="number" 
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              defaultValue={1024}
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">Height</label>
-            <input 
-              type="number" 
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              defaultValue={768}
-            />
+    <div className="h-full bg-white border-l border-gray-200 overflow-y-auto p-4">
+      <form className="space-y-8">
+        {/* Hero Section */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Hero Section</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Background Image URL</label>
+              <input
+                type="text"
+                {...register("hero.backgroundImage")}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Title</label>
+              <input
+                type="text"
+                {...register("hero.title")}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Subtitle</label>
+              <input
+                type="text"
+                {...register("hero.subtitle")}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Date</label>
+              <input
+                type="text"
+                {...register("hero.date")}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
           </div>
         </div>
-      </div>
+
+        <hr className="border-gray-200" />
+
+        {/* Our Story Section */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Our Story</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Title</label>
+              <input
+                type="text"
+                {...register("ourStory.title")}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Content</label>
+              <textarea
+                {...register("ourStory.content")}
+                rows={4}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Image URL</label>
+              <input
+                type="text"
+                {...register("ourStory.image")}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+        </div>
+
+        <hr className="border-gray-200" />
+
+        {/* Timeline Section */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Timeline</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Title</label>
+              <input
+                type="text"
+                {...register("timeline.title")}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            {/* Timeline Events */}
+            {websiteData.timeline.events.map((_, index) => (
+              <div key={index} className="space-y-2 p-4 border rounded-md">
+                <h4 className="font-medium">Event {index + 1}</h4>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Date</label>
+                  <input
+                    type="text"
+                    {...register(`timeline.events.${index}.date`)}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Title</label>
+                  <input
+                    type="text"
+                    {...register(`timeline.events.${index}.title`)}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Description</label>
+                  <textarea
+                    {...register(`timeline.events.${index}.description`)}
+                    rows={2}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <hr className="border-gray-200" />
+
+        {/* Event Details Section */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Event Details</h3>
+          <div className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Title</label>
+              <input
+                type="text"
+                {...register("eventDetails.title")}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            {/* Ceremony */}
+            <div className="space-y-4 p-4 border rounded-md">
+              <h4 className="font-medium">Ceremony</h4>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Time</label>
+                <input
+                  type="text"
+                  {...register("eventDetails.ceremony.time")}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Location</label>
+                <input
+                  type="text"
+                  {...register("eventDetails.ceremony.location")}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Address</label>
+                <textarea
+                  {...register("eventDetails.ceremony.address")}
+                  rows={2}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+            {/* Reception */}
+            <div className="space-y-4 p-4 border rounded-md">
+              <h4 className="font-medium">Reception</h4>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Time</label>
+                <input
+                  type="text"
+                  {...register("eventDetails.reception.time")}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Location</label>
+                <input
+                  type="text"
+                  {...register("eventDetails.reception.location")}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Address</label>
+                <textarea
+                  {...register("eventDetails.reception.address")}
+                  rows={2}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr className="border-gray-200" />
+
+        {/* Photo Gallery Section */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Photo Gallery</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Title</label>
+              <input
+                type="text"
+                {...register("photoGallery.title")}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            {/* Gallery Images */}
+            {websiteData.photoGallery.images.map((_, index) => (
+              <div key={index} className="space-y-2 p-4 border rounded-md">
+                <h4 className="font-medium">Image {index + 1}</h4>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">URL</label>
+                  <input
+                    type="text"
+                    {...register(`photoGallery.images.${index}`)}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <hr className="border-gray-200" />
+
+        {/* Gifts Section */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Gifts</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Title</label>
+              <input
+                type="text"
+                {...register("gifts.title")}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Description</label>
+              <textarea
+                {...register("gifts.description")}
+                rows={3}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            {/* Registries */}
+            {websiteData.gifts.registries.map((_, index) => (
+              <div key={index} className="space-y-2 p-4 border rounded-md">
+                <h4 className="font-medium">Registry {index + 1}</h4>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Name</label>
+                  <input
+                    type="text"
+                    {...register(`gifts.registries.${index}.name`)}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">URL</label>
+                  <input
+                    type="text"
+                    {...register(`gifts.registries.${index}.url`)}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <hr className="border-gray-200" />
+
+        {/* RSVP Section */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">RSVP</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Title</label>
+              <input
+                type="text"
+                {...register("rsvp.title")}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Description</label>
+              <textarea
+                {...register("rsvp.description")}
+                rows={3}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Deadline</label>
+              <input
+                type="text"
+                {...register("rsvp.deadline")}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+        </div>
+
+        <hr className="border-gray-200" />
+
+        {/* Footer Section */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Footer</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Message</label>
+              <textarea
+                {...register("footer.message")}
+                rows={2}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Hashtag</label>
+              <input
+                type="text"
+                {...register("footer.hashtag")}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   );
 }
