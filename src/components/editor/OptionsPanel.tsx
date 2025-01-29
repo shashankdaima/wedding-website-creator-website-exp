@@ -15,7 +15,73 @@ export default function OptionsPanel() {
   useEffect(() => {
     if (formValues) {
       console.log(formValues);
-      // dispatch(updateWebsiteData(formValues));
+      dispatch(updateWebsiteData({
+        meta: {
+          title: formValues.meta?.title || "",
+          viewport: formValues.meta?.viewport || ""
+        },
+        hero: {
+          backgroundImage: formValues.hero?.backgroundImage || "",
+          title: formValues.hero?.title || "",
+          subtitle: formValues.hero?.subtitle || "",
+          date: formValues.hero?.date || "",
+          overlayOpacity: formValues.hero?.overlayOpacity || ""
+        },
+        ourStory: {
+          title: formValues.ourStory?.title || "",
+          content: formValues.ourStory?.content || "",
+          image: formValues.ourStory?.image || ""
+        },
+        timeline: {
+          title: formValues.timeline?.title || "",
+          events: []
+          // events: formValues.timeline?.events || []
+        },
+        eventDetails: {
+          title: formValues.eventDetails?.title || "",
+          ceremony: {
+            title: formValues.eventDetails?.ceremony?.title || "", 
+            time: formValues.eventDetails?.ceremony?.time || "", 
+            location: formValues.eventDetails?.ceremony?.location || "", 
+            address: formValues.eventDetails?.ceremony?.address || "",
+            date: formValues.eventDetails?.ceremony?.date || ""
+          },
+          reception: {
+            title: formValues.eventDetails?.reception?.title || "", 
+            time: formValues.eventDetails?.reception?.time || "", 
+            location: formValues.eventDetails?.reception?.location || "", 
+            address: formValues.eventDetails?.reception?.address || "",
+            date: formValues.eventDetails?.reception?.date || ""
+          },
+          afterParty: {
+            title: formValues.eventDetails?.afterParty?.title || "", 
+            time: formValues.eventDetails?.afterParty?.time || "", 
+            location: formValues.eventDetails?.afterParty?.location || "", 
+            address: formValues.eventDetails?.afterParty?.address || "",
+            date: formValues.eventDetails?.afterParty?.date || ""
+          }
+        },
+        photoGallery: {
+          title: formValues.photoGallery?.title || "",
+          // images: formValues.photoGallery?.images || []
+          images: []
+        },
+        gifts: {
+          title: formValues.gifts?.title || "",
+          description: formValues.gifts?.description || "",
+          // registries: formValues.gifts?.registries || []
+          registries: []
+        },
+        rsvp: {
+          title: formValues.rsvp?.title || "",
+          description: formValues.rsvp?.description || "",
+          deadline: formValues.rsvp?.deadline || ""
+        },
+        footer: {
+          message: formValues.footer?.message || "",
+          hashtag: formValues.footer?.hashtag || ""
+        }
+      }));
     }
   }, [formValues, dispatch]);
 
