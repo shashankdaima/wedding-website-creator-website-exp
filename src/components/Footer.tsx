@@ -11,5 +11,5 @@ export default function Footer({ message, hashtag }: FooterProps) {
         <p className="text-gray-400">{hashtag}</p>
       </div>
     </footer>
-  );
+  )
 }
