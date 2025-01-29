@@ -7,57 +7,100 @@ import PhotoGallery from '../components/PhotoGallery';
 import Gifts from '../components/Gifts';
 import RSVP from '../components/RSVP';
 import Footer from '../components/Footer';
-import { websiteData } from '../data/websiteData';
+import { websiteData as staticValue } from '../data/websiteData';
+import { GetServerSideProps } from 'next';
+import path from 'path';
+import fs from 'fs';
 
-export default function Home() {
+interface HomeProps {
+  websiteData: typeof staticValue;
+}
+
+export default function Home({ websiteData }: HomeProps) {
+  // Use websiteData from props, fallback to staticValue if not available
+  const data = (websiteData as any).editor.websiteData || staticValue;
   return (
     <>
       <Head>
-        <title>{websiteData.meta.title}</title>
-        <meta name="viewport" content={websiteData.meta.viewport} />
+        <title>{data.meta.title}</title>
+        <meta name="viewport" content={data.meta.viewport} />
       </Head>
       <main className="overflow-x-hidden">
         <Hero 
-          backgroundImage={websiteData.hero.backgroundImage}
-          title={websiteData.hero.title}
-          subtitle={websiteData.hero.subtitle}
-          date={websiteData.hero.date}
-          overlayOpacity={websiteData.hero.overlayOpacity}
+          backgroundImage={data.hero.backgroundImage}
+          title={data.hero.title}
+          subtitle={data.hero.subtitle}
+          date={data.hero.date}
+          overlayOpacity={data.hero.overlayOpacity}
         />
         <OurStory 
-          title={websiteData.ourStory.title}
-          content={websiteData.ourStory.content}
-          image={websiteData.ourStory.image}
+          title={data.ourStory.title}
+          content={data.ourStory.content}
+          image={data.ourStory.image}
         />
         <Timeline 
-          title={websiteData.timeline.title}
-          events={websiteData.timeline.events}
+          title={data.timeline.title}
+          events={data.timeline.events}
         />
         <EventDetails 
-          title={websiteData.eventDetails.title}
-          ceremony={websiteData.eventDetails.ceremony}
-          reception={websiteData.eventDetails.reception}
-          afterParty={websiteData.eventDetails.afterParty}
+          title={data.eventDetails.title}
+          ceremony={data.eventDetails.ceremony}
+          reception={data.eventDetails.reception}
+          afterParty={data.eventDetails.afterParty}
         />
         <PhotoGallery 
-          title={websiteData.photoGallery.title}
-          images={websiteData.photoGallery.images}
+          title={data.photoGallery.title}
+          images={data.photoGallery.images}
         />
         <Gifts 
-          title={websiteData.gifts.title}
-          description={websiteData.gifts.description}
-          registries={websiteData.gifts.registries}
+          title={data.gifts.title}
+          description={data.gifts.description}
+          registries={data.gifts.registries}
         />
         <RSVP 
-          title={websiteData.rsvp.title}
-          description={websiteData.rsvp.description}
-          deadline={websiteData.rsvp.deadline}
+          title={data.rsvp.title}
+          description={data.rsvp.description}
+          deadline={data.rsvp.deadline}
         />
       </main>
       <Footer 
-        message={websiteData.footer.message}
-        hashtag={websiteData.footer.hashtag}
+        message={data.footer.message}
+        hashtag={data.footer.hashtag}
       />
     </>
   );
+}
+
+export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
+  try {
+    const filePath = path.join(process.cwd(), 'public', 'site-state.json');
+    
+    // Check if the file exists
+    if (!fs.existsSync(filePath)) {
+      // Return static data if no deployed data exists
+      return {
+        props: {
+          websiteData: staticValue
+        }
+      };
+    }
+
+    // Read and parse the deployed data
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
+    const websiteData = JSON.parse(fileContent);
+
+    return {
+      props: {
+        websiteData
+      }
+    };
+  } catch (error) {
+    console.error('Error reading website data:', error);
+    // Return static data as fallback in case of error
+    return {
+      props: {
+        websiteData: staticValue
+      }
+    };
+  }
 }
