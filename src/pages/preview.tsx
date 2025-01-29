@@ -23,6 +23,20 @@ export default function PreviewPage() {
   return (
     <AnimationProvider enableAnimations={true}>
       <div className="min-h-screen bg-white">
+            <div className="h-14 bg-white border-b border-gray-200 flex items-center px-4 justify-between">
+  <div className="flex items-center space-x-4">
+    <h1 className="!text-xl font-semibold text-gray-800">Wedding Website Preview</h1>
+  </div>
+  <div className="flex items-center space-x-4">
+    <button 
+      onClick={() => window.close()}
+      className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
+    >
+      Close Preview
+    </button>
+  </div>
+</div>
+
         <main className="overflow-x-hidden">
           <Hero
             backgroundImage={websiteData.hero.backgroundImage}
