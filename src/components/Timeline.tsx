@@ -124,7 +124,7 @@ export default function Timeline({ title, events }: TimelineProps) {
                     <p className="font-cormorant text-[#444] leading-relaxed">{event.description}</p>
                   </div>
                 </div>
-                <div className="timeline-dot absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-white rounded-full border-4 border-[#C1A57B] shadow-lg"></div>
+                <div className="hidden md:block timeline-dot absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-white rounded-full border-4 border-[#C1A57B] shadow-lg"></div>
               </div>
             ))}
           </div>
