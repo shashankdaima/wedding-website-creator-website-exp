@@ -58,7 +58,7 @@ export default function Hero({
         style={{ backgroundImage: `url('${backgroundImage}')` }}
       ></div>
       <div className="relative z-20 h-full flex flex-col items-center justify-center text-white">
-        <h1 id="hero" className="text-7xl font-great-vibes mb-4">{title}</h1>
+        <h1 id="hero" className="text-7xl font-great-vibes mb-4 text-center">{title}</h1>
         <p id="hero" className="text-xl font-cormorant tracking-widest">{subtitle}</p>
         <p id="hero" className="mt-8 text-2xl font-cormorant">{date}</p>
       </div>
