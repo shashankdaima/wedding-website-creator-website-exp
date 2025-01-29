@@ -42,23 +42,6 @@ export const TabView: React.FC<TabViewProps> = ({ value, setValue }) => {
           </button>
         </nav>
       </div>
-      <div className="mt-4">
-        <div className={value === 'desktop' ? 'block' : 'hidden'}>
-          <div className="p-4">
-            Desktop View Content
-          </div>
-        </div>
-        <div className={value === 'tablet' ? 'block' : 'hidden'}>
-          <div className="p-4">
-            Tablet View Content
-          </div>
-        </div>
-        <div className={value === 'mobile' ? 'block' : 'hidden'}>
-          <div className="p-4">
-            Mobile View Content
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
